@@ -6,7 +6,6 @@ import {
   Files,
   Home,
   Login,
-  PasswordRecovery,
   PasswordRecoveryOne,
   PasswordRecoveryTwo,
   Profile,
@@ -36,8 +35,14 @@ const App = () => {
           <Stack.Screen name="RegistrationOne" component={RegistrationOne} />
           <Stack.Screen name="RegistrationTwo" component={RegistrationTwo} />
           <Stack.Screen name="Files" component={Files} />
-          <Stack.Screen name="PasswordRecoveryOne" component={PasswordRecoveryOne} />
-          <Stack.Screen name="PasswordRecoveryTwo" component={PasswordRecoveryTwo} />
+          <Stack.Screen
+            name="PasswordRecoveryOne"
+            component={PasswordRecoveryOne}
+          />
+          <Stack.Screen
+            name="PasswordRecoveryTwo"
+            component={PasswordRecoveryTwo}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
