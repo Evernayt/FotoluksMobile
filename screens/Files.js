@@ -9,12 +9,19 @@ import {
   View,
 } from 'react-native';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
-import { Button, CircleButton, Loader, NavigationHeader } from '../components';
+import {
+  Button,
+  CircleButton,
+  Loader,
+  NavigationHeader,
+  ShopSelectModal,
+} from '../components';
 import { COLORS, FONTS, ICONS, SIZES } from '../constants';
 import { uploadFilesAPI } from '../http/uploadFileAPI';
 import Toast from '@skilopay/react-native-easy-toast';
 import { useSelector } from 'react-redux';
 import { mask } from 'react-native-mask-text';
+import { useModal } from '../hooks';
 
 const itemWidth = (SIZES.width - 64) / 2;
 const itemHeight = itemWidth * 1.17;
@@ -25,12 +32,15 @@ const Files = ({ route }) => {
 
   const [files, setFiles] = useState(resFiles);
   const [selectedFilesCount, setSelectedFilesCount] = useState(0);
+  const [selectedShop, setSelectedShop] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const user = useSelector(state => state.user.user);
 
   const toastRef = useRef();
   const toastErrorRef = useRef();
+
+  const { isShowing, toggle } = useModal();
 
   const imgOptions = {
     allowMultiSelection: true,
@@ -135,16 +145,25 @@ const Files = ({ route }) => {
     }
 
     const maskedPhone = mask(user.phone, '9 (999) 999-99-99');
-    uploadFilesAPI(formData, user.name, maskedPhone, user.avatar)
+    uploadFilesAPI(
+      formData,
+      user.name,
+      maskedPhone,
+      user.avatar,
+      selectedShop.id,
+    )
       .then(res => {
         if (res.ok) {
-          toastRef.current.show('Отправлено', 1500);
+          toastRef.current.show('Отправлено', 2000);
           setFiles([]);
         } else {
-          toastErrorRef.current.show('Ошибка: не удалось отправить', 1500);
+          toastErrorRef.current.show('Ошибка: не удалось отправить', 2000);
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        toggle();
+      });
   };
 
   const getExtensionColor = extension => {
@@ -203,6 +222,13 @@ const Files = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ShopSelectModal
+        isShowing={isShowing}
+        hide={toggle}
+        selectedShop={selectedShop}
+        setSelectedShop={setSelectedShop}
+        sendFiles={sendFiles}
+      />
       <Toast ref={toastRef} style={{ backgroundColor: COLORS.success }} />
       <Toast ref={toastErrorRef} style={{ backgroundColor: COLORS.error }} />
       {selectedFilesCount > 0 ? (
@@ -263,7 +289,7 @@ const Files = ({ route }) => {
             }
             style={{ margin: 16 }}
             disabled={files.length === 0}
-            onPress={sendFiles}
+            onPress={toggle}
           />
         </>
       )}

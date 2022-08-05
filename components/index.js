@@ -9,6 +9,7 @@ import ColorsRadioButton from './UI/ColorsRadioButton';
 import KeyboardAvoidingWrapper from './KeyboardAvoidingWrapper';
 import Input from './UI/Input';
 import MaskedInput from './UI/MaskedInput';
+import ShopSelectModal from './ShopSelectModal';
 
 export {
   Header,
@@ -21,5 +22,6 @@ export {
   ColorsRadioButton,
   KeyboardAvoidingWrapper,
   Input,
-  MaskedInput
+  MaskedInput,
+  ShopSelectModal,
 };

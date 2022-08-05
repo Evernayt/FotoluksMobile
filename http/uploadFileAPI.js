@@ -1,7 +1,7 @@
 import api from '../constants/api';
 
-export const uploadFilesAPI = async (formData, name, phone, avatar) => {
-  const route = `${api.SERVER_API_URL}api/uploadFile/upload/?name=${name}&phone=${phone}&avatar=${avatar}`;
+export const uploadFilesAPI = async (formData, name, phone, avatar, shopId) => {
+  const route = `${api.SERVER_API_URL}api/uploadFile/upload/?name=${name}&phone=${phone}&avatar=${avatar}&shopId=${shopId}`;
   const res = await fetch(route, {
     method: 'POST',
     body: formData,
