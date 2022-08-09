@@ -131,6 +131,7 @@ const Files = ({ route }) => {
   };
 
   const sendFiles = () => {
+    toggle();
     setLoading(true);
     const formData = new FormData();
 
@@ -162,7 +163,6 @@ const Files = ({ route }) => {
       })
       .finally(() => {
         setLoading(false);
-        toggle();
       });
   };
 
