@@ -42,18 +42,18 @@ const SendToPrintModal = ({ isShowing, hide }) => {
     }
   };
 
-  const openPhotos = async () => {
+  const openPhotos = () => {
     hide();
-    await DocumentPicker.pick(imgOptions)
+    DocumentPicker.pick(imgOptions)
       .then(res => {
         navigation.navigate('Files', { resFiles: res, fileType: 'img' });
       })
       .catch(handleError);
   };
 
-  const openDocuments = async () => {
+  const openDocuments = () => {
     hide();
-    await DocumentPicker.pick(docOptions)
+    DocumentPicker.pick(docOptions)
       .then(res => {
         navigation.navigate('Files', { resFiles: res, fileType: 'doc' });
       })
