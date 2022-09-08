@@ -90,7 +90,6 @@ const Profile = () => {
       uploadAvatarAPI(formData)
         .then(res => res.text())
         .then(data => {
-          console.log(data);
           updateUser(data);
         })
         .catch(e => {
@@ -118,7 +117,6 @@ const Profile = () => {
 
     updateUserAPI(editedUser)
       .then(data => {
-        console.log(data);
         dispatch(loginAction(data));
       })
       .catch(e => {
