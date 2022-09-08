@@ -17,7 +17,8 @@ const ShopSelectModal = ({
   hide,
   selectedShop,
   setSelectedShop,
-  sendFiles,
+  continueButtonText,
+  continueFunc,
 }) => {
   const [shops, setShops] = useState([]);
 
@@ -27,7 +28,7 @@ const ShopSelectModal = ({
 
   const fetchShops = () => {
     fetchShopsAPI().then(data => {
-      setShops(data);
+      setShops(data.rows);
     });
   };
 
@@ -60,9 +61,9 @@ const ShopSelectModal = ({
           />
           <View style={styles.buttonsContainer}>
             <Button
-              text="Отправить"
+              text={continueButtonText}
               style={{ flex: 1, marginRight: 8 }}
-              onPress={sendFiles}
+              onPress={continueFunc}
               disabled={!selectedShop}
             />
             <Button
