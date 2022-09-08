@@ -2,12 +2,19 @@ import { $authHost, $host } from './index';
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const registrationAPI = async (name, login, password, phone) => {
+export const registrationAPI = async (
+  name,
+  login,
+  password,
+  phone,
+  shopId = 1,
+) => {
   const { data } = await $host.post('api/user/registration', {
     name,
     login,
     password,
     phone,
+    shopId,
   });
   storeToken(data.token);
   return jwtDecode(data.token);
