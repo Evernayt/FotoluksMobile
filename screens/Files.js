@@ -222,7 +222,8 @@ const Files = ({ route }) => {
         hide={toggle}
         selectedShop={selectedShop}
         setSelectedShop={setSelectedShop}
-        sendFiles={sendFiles}
+        continueButtonText="Отправить"
+        continueFunc={sendFiles}
       />
       <Toast ref={toastRef} style={{ backgroundColor: COLORS.success }} />
       <Toast ref={toastErrorRef} style={{ backgroundColor: COLORS.error }} />
