@@ -23,20 +23,20 @@ const RegistrationOne = () => {
 
   const navigation = useNavigation();
 
-  //MYTODO: проверить, если пользователь существует
   const next = () => {
     if (phone !== '') {
       const unmaskedPhone = unMask(phone);
 
       isVerifiedAPI(unmaskedPhone)
         .then(data => {
-          if (data.user) {
+          if (data.user && data.phoneVerified) {
             alert('Пользователь с таким номером телефона уже зарегестрирован.');
           } else {
             navigation.navigate('RegistrationTwo', {
               maskedPhone: phone,
               unmaskedPhone,
               phoneVerified: data.phoneVerified,
+              user: data.user,
             });
           }
         })

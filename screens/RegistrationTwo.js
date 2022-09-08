@@ -15,7 +15,7 @@ import {
   NavigationHeader,
 } from '../components';
 import { COLORS, FONTS, IMAGES } from '../constants';
-import { registrationAPI } from '../http/userAPI';
+import { registrationAPI, updateUserAPI } from '../http/userAPI';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCodeAPI, verifyAPI } from '../http/verificationAPI';
 import publicIP from 'react-native-public-ip';
@@ -28,7 +28,7 @@ import {
 import secondsToTime from '../helpers/secondsToTime';
 
 const RegistrationTwo = ({ route }) => {
-  const { maskedPhone, unmaskedPhone, phoneVerified } = route.params;
+  const { maskedPhone, unmaskedPhone, phoneVerified, user } = route.params;
 
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(phoneVerified);
@@ -107,18 +107,31 @@ const RegistrationTwo = ({ route }) => {
   };
 
   const signUp = () => {
-    try {
-      if (name !== '' && password !== '') {
-        const login = unmaskedPhone;
-        registrationAPI(name, login, password, unmaskedPhone).then(data => {
-          dispatch(loginAction(data));
-          dispatch(setPhoneAction(null));
-          navigation.navigate('Home');
-        });
-      }
-    } catch (e) {
-      alert(e.response.data.message);
+    if (user) {
+      const updatedUser = {
+        ...user,
+        name,
+        password,
+      };
+      updateUserAPI(updatedUser)
+        .then(data => {
+          signIn(data);
+        })
+        .catch(e => alert(e.response.data.message));
+    } else {
+      const login = unmaskedPhone;
+      registrationAPI(name, login, password, unmaskedPhone)
+        .then(data => {
+          signIn(data);
+        })
+        .catch(e => alert(e.response.data.message));
     }
+  };
+
+  const signIn = user => {
+    dispatch(loginAction(user));
+    dispatch(setPhoneAction(null));
+    navigation.navigate('Home');
   };
 
   return (
@@ -201,7 +214,11 @@ const RegistrationTwo = ({ route }) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <Button text="Зарегистрироваться" onPress={signUp} />
+              <Button
+                text="Зарегистрироваться"
+                onPress={signUp}
+                disabled={!name || !password}
+              />
             </>
           )}
         </View>
