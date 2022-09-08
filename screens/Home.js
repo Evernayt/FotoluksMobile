@@ -19,7 +19,7 @@ import {
 } from '../components';
 import { COLORS, FONTS, SIZES } from '../constants';
 import { useModal } from '../hooks';
-import { fetchCategoriesAPI } from '../http/productAPI';
+import { fetchCategoriesWithMinPriceAPI } from '../http/productAPI';
 import Toast from '@skilopay/react-native-easy-toast';
 import { checkAPI } from '../http/userAPI';
 import { loginAction } from '../store/userReducer';
@@ -50,7 +50,7 @@ const Home = () => {
   }, []);
 
   const fetchCategories = () => {
-    fetchCategoriesAPI()
+    fetchCategoriesWithMinPriceAPI()
       .then(data => {
         setCategories(data);
       })

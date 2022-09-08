@@ -1,7 +1,7 @@
 import { $authHost, $host } from './index';
 
-export const fetchCategoriesAPI = async () => {
-  const { data } = await $host.get('api/category/all');
+export const fetchCategoriesWithMinPriceAPI = async () => {
+  const { data } = await $host.get('api/category/allWithMinPrice');
   return data;
 };
 
