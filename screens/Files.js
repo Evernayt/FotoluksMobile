@@ -75,27 +75,22 @@ const Files = ({ route }) => {
   };
 
   const selectToggle = name => {
-    let selected = true;
-    setFiles(prevState =>
-      prevState.map(state => {
-        if (state.name === name) {
-          if (state.isSelected) {
-            selected = false;
-            return { ...state, isSelected: false };
-          } else {
-            return { ...state, isSelected: true };
-          }
+    let filesCopy = [...files];
+    filesCopy = filesCopy.map(file => {
+      if (file.name === name) {
+        if (file.isSelected) {
+          setSelectedFilesCount(prevState => prevState - 1);
+          return { ...file, isSelected: false };
         } else {
-          return state;
+          setSelectedFilesCount(prevState => prevState + 1);
+          return { ...file, isSelected: true };
         }
-      }),
-    );
+      } else {
+        return file;
+      }
+    });
 
-    if (selected) {
-      setSelectedFilesCount(prevState => prevState + 1);
-    } else {
-      setSelectedFilesCount(prevState => prevState - 1);
-    }
+    setFiles(filesCopy);
   };
 
   const handleError = err => {
