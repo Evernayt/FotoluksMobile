@@ -11,6 +11,7 @@ import { Loader, NavigationHeader } from '../components';
 import { COLORS, FONTS, IMAGES, SIZES } from '../constants';
 import { fetchTypesAPI } from '../http/productAPI';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { groupBy } from '../helpers';
 
 const itemWidth = SIZES.width - 96;
 
@@ -19,12 +20,22 @@ const Types = ({ route }) => {
 
   const [types, setTypes] = useState([]);
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(0);
+  const [typeFeatures, setTypeFeatures] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTypesAPI(product.id)
       .then(data => {
         setTypes(data);
+        const typeFeatures = [];
+        for (let i = 0; i < data.length; i++) {
+          typeFeatures.push({
+            typeId: data[i].id,
+            features: groupBy(data[i].params, 'featureId'),
+          });
+        }
+        console.log(typeFeatures);
+        setTypeFeatures(typeFeatures);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -48,7 +59,7 @@ const Types = ({ route }) => {
           borderRadius: 24,
           borderWidth: 2,
           borderColor: COLORS.border,
-          backgroundColor: `#${item.value}`,
+          backgroundColor: item.value,
           marginRight: 10,
         }}
       />
@@ -76,11 +87,11 @@ const Types = ({ route }) => {
               <Text style={styles.typeName}>
                 {types[selectedTypeIndex].name}
               </Text>
-              {types[selectedTypeIndex].features?.map(feature => {
-                if (feature.name === 'Цвет') {
+              {typeFeatures[selectedTypeIndex].features?.map(params => {
+                if (params[0].feature.name === 'Цвет') {
                   return (
                     <FlatList
-                      data={feature.params}
+                      data={params}
                       horizontal
                       showsHorizontalScrollIndicator={false}
                       keyExtractor={item => `${item.id}`}
@@ -90,9 +101,11 @@ const Types = ({ route }) => {
                         paddingRight: 14,
                         marginTop: 24,
                       }}
-                      key={feature.id}
+                      key={params[0].id}
                     />
                   );
+                } else {
+                  return null;
                 }
               })}
               <Text style={styles.price}>
