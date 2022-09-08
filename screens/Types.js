@@ -34,7 +34,6 @@ const Types = ({ route }) => {
             features: groupBy(data[i].params, 'featureId'),
           });
         }
-        console.log(typeFeatures);
         setTypeFeatures(typeFeatures);
       })
       .finally(() => setLoading(false));
