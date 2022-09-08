@@ -30,17 +30,15 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const signIn = () => {
-    if (login !== '' && password !== '') {
-      const unmaskedLogin = login.replace(/[^\d;]/g, '');
-      loginAPI(unmaskedLogin, password)
-        .then(data => {
-          dispatch(loginAction(data));
-          navigation.navigate('Home');
-        })
-        .catch(e => {
-          alert(e.response.data.message);
-        });
-    }
+    const unmaskedLogin = login.replace(/[^\d;]/g, '');
+    loginAPI(unmaskedLogin, password)
+      .then(data => {
+        dispatch(loginAction(data));
+        navigation.navigate('Home');
+      })
+      .catch(e => {
+        alert(e.response.data.message);
+      });
   };
 
   return (
@@ -93,7 +91,7 @@ const Login = () => {
             <Button
               text="Войти"
               onPress={signIn}
-              disabled={login === '' || password === ''}
+              disabled={login.length < 17 || !password}
             />
 
             <TouchableOpacity
