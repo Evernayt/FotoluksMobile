@@ -1,5 +1,5 @@
-const SERVER_API_URL = 'http://192.168.0.182:5000/'
+const SERVER_API_URL = 'https://fotoluks-server.herokuapp.com/';
 
 export default {
-    SERVER_API_URL
-}
+  SERVER_API_URL,
+};
